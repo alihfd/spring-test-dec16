@@ -12,12 +12,12 @@ pipeline {
         }
 stage('Cleanup') {
             steps {
-                sh 'mvn clean'
+                sh './mvnw clean'
             }
         }
 stage('Test') {
             steps {
-                sh 'mvn test'
+                sh './mvnw test'
             }
             post {
                 always {
@@ -27,7 +27,7 @@ stage('Test') {
         }
         stage('Build') {
             steps {
-                sh 'mvn package'
+                sh './mvnw package'
             }
         }
         stage('Update Docker UAT image') {
@@ -35,7 +35,7 @@ stage('Test') {
             steps {
                 sh '''
                     docker build --no-cache -t travelAgency .
-                    docker tag person:latest amritendudockerhub/travelAgency:latest
+                    docker tag travelAgency:latest amritendudockerhub/travelAgency:latest
                     docker push amritendudockerhub/travelAgency:latest
 docker rmi travelAgency:latest
                 '''
