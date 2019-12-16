@@ -15,8 +15,10 @@ FROM openjdk:8-jdk-alpine
 #expose port 7000
 EXPOSE 7000
 
+ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
+
 #default command
-CMD java -jar /data/Demo-H2-0.0.1-SNAPSHOT.jar
+#CMD java -jar /data/Demo-H2-0.0.1-SNAPSHOT.jar
 
 #copy hello world to docker image from builder image
 
