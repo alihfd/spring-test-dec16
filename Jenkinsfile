@@ -41,7 +41,7 @@ node {
       // build docker image
       sh "whoami"
       sh "ls -all /var/run/docker.sock"
-      sh "mv ./target/hello*.jar ./data" 
+      sh "mv ./target/*.jar ./data" 
       
       dockerImage = docker.build("ta-image")
     }
