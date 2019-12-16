@@ -1,68 +1,59 @@
-pipeline {
-    agent any
-    triggers {
-        pollSCM('*/15 * * * *')
+node {
+    // reference to maven
+    // ** NOTE: This 'maven-3.6.1' Maven tool must be configured in the Jenkins Global Configuration.   
+    def mvnHome = tool 'M36'
+
+    // holds reference to docker image
+    def dockerImage
+    // ip address of the docker private repository(nexus)
+    
+    def dockerRepoUrl = "localhost:7000"
+    def dockerImageName = "ta-image"
+    def dockerImageTag = "${dockerRepoUrl}/${dockerImageName}:${env.BUILD_NUMBER}"
+    
+    stage('Clone Repo') { // for display purposes
+      // Get some code from a GitHub repository
+      git 'https://github.com/dstar55/docker-hello-world-spring-boot.git'
+      // Get the Maven tool.
+      // ** NOTE: This 'maven-3.6.1' Maven tool must be configured
+      // **       in the global configuration.           
+      mvnHome = tool 'M36'
+    }    
+  
+    stage('Build Project') {
+      // build project via maven
+      sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
     }
-    options { disableConcurrentBuilds() }
-    stages {
-        stage('Permissions') {
-            steps {
-                sh 'chmod 775 *'
-            }
-        }
-stage('Cleanup') {
-            steps {
-                sh 'mvn clean'
-            }
-        }
-stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'build/test-results/test/*.xml'
-                }
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'mvn package'
-            }
-        }
-        stage('Update Docker UAT image') {
-            when { branch "master" }
-            steps {
-                sh '''
-                    docker build --no-cache -t travelAgency .
-                    docker tag travelAgency:latest amritendudockerhub/travelAgency:latest
-                    docker push amritendudockerhub/travelAgency:latest
-docker rmi travelAgency:latest
-                '''
-            }
-        }
-        stage('Update UAT container') {
-            when { branch "master" }
-            steps {
-                sh '''
-                    docker pull amritendudockerhub/travelAgency:latest
-                    docker stop travelAgency
-                    docker rm travelAgency
-                    docker run -p 9090:9090 --name travelAgency -t -d amritendudockerhub/travelAgency
-                    docker rmi -f $(docker images -q --filter dangling=true)
-                '''
-            }
-        }
-        stage('Release Docker image') {
-            when { buildingTag() }
-            steps {
-                sh '''
-                    docker build --no-cache -t person .
-                    docker tag person:latest amritendudockerhub/travelAgency:${TAG_NAME}
-                    docker push amritendudockerhub/travelAgency:${TAG_NAME}
-docker rmi $(docker images -f “dangling=true” -q)
-               '''
-            }
-        }
+	
+	stage('Publish Tests Results'){
+      parallel(
+        publishJunitTestsResultsToJenkins: {
+          echo "Publish junit Tests Results"
+		  junit '**/target/surefire-reports/TEST-*.xml'
+		  archive 'target/*.jar'
+        },
+        publishJunitTestsResultsToSonar: {
+          echo "This is branch b"
+      })
+    }
+		
+    stage('Build Docker Image') {
+      // build docker image
+      sh "whoami"
+      sh "ls -all /var/run/docker.sock"
+      sh "mv ./target/hello*.jar ./data" 
+      
+      dockerImage = docker.build("ta-image")
+    }
+   
+    stage('Deploy Docker Image'){
+      
+      // deploy docker image to nexus
+
+      echo "Docker Image Tag Name: ${dockerImageTag}"
+
+      sh "docker login -u admin -p admin123 ${dockerRepoUrl}"
+      sh "docker tag ${dockerImageName} ${dockerImageTag}"
+      sh "docker push ${dockerImageTag}"
     }
 }
