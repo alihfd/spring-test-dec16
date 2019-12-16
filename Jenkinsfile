@@ -12,12 +12,12 @@ pipeline {
         }
 stage('Cleanup') {
             steps {
-                sh './mvnw clean'
+                sh 'mvn clean'
             }
         }
 stage('Test') {
             steps {
-                sh './mvnw test'
+                sh 'mvn test'
             }
             post {
                 always {
@@ -27,7 +27,7 @@ stage('Test') {
         }
         stage('Build') {
             steps {
-                sh './mvnw package'
+                sh 'mvn package'
             }
         }
         stage('Update Docker UAT image') {
