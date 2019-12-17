@@ -34,4 +34,8 @@ CMD java -jar /data/Demo-H2-0.0.1-SNAPSHOT.jar
 
 #copy hello world to docker image from builder image
 
-COPY target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
+COPY /tmp/target/*.jar /data/Demo-H2-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java","-jar","data/Demo-H2-0.0.1-SNAPSHOT.jar"]
+
+#COPY --from=maven_build /tmp/target/hello-world-0.1.0.jar /data/hello-world-0.1.0.jar
