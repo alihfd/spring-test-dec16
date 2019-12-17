@@ -15,6 +15,8 @@ WORKDIR /tmp/
 
 RUN mvn package
 
+COPY tmp/target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
+
 
 #pull base image
 
