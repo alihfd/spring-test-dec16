@@ -15,6 +15,8 @@ FROM openjdk:8-jdk-alpine
 #expose port 7000
 EXPOSE 7000
 
+COPY target/*.jar app.jar
+
 ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
 
 #default command
