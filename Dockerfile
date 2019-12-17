@@ -13,7 +13,9 @@ RUN echo pwd
 
 WORKDIR /tmp/
 
-RUN mvn package && COPY target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
+RUN mvn package 
+
+COPY ./target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
 
 
 
