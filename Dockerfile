@@ -1,5 +1,7 @@
 FROM maven:3.6.1-jdk-8-alpine AS maven_build
 
+VOLUME /tmp
+
 COPY pom.xml /tmp/
 
 COPY src /tmp/src/
