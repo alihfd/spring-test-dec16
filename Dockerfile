@@ -51,7 +51,7 @@ ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.ja
 #EXPOSE 7000
 
 #default command
-3CMD java -jar /data/Demo-H2-0.0.1-SNAPSHOT.jar
+#CMD java -jar /data/Demo-H2-0.0.1-SNAPSHOT.jar
 
 #copy hello world to docker image from builder image
 
