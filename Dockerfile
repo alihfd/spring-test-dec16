@@ -8,16 +8,15 @@ WORKDIR /tmp/
 
 RUN mvn package
 
+COPY target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
 #pull base image
 
 FROM openjdk:8-jdk-alpine
 
 #expose port 7000
 EXPOSE 7000
-
-COPY target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
-
-ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
 
 #default command
 CMD java -jar /data/Demo-H2-0.0.1-SNAPSHOT.jar
