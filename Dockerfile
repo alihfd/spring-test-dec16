@@ -6,9 +6,10 @@ COPY pom.xml /tmp/
 
 COPY src /tmp/src/
 
-COPY /target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
+#COPY /target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
 
-ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
+#ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
+RUN echo pwd
 
 WORKDIR /tmp/
 
