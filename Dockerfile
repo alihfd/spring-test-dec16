@@ -15,9 +15,6 @@ RUN echo pwd
 
 RUN mvn package
 
-COPY /target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
-
-ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
 
 #pull base image
 
