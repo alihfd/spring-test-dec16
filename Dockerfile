@@ -11,9 +11,13 @@ COPY src /tmp/src/
 #ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
 RUN echo pwd
 
-WORKDIR /tmp/
+#WORKDIR /tmp/
 
 RUN mvn package
+
+COPY /target/*.jar Demo-H2-0.0.1-SNAPSHOT.jar
+
+ENTRYPOINT ["java","-jar","/Demo-H2-0.0.1-SNAPSHOT.jar"]
 
 #pull base image
 
