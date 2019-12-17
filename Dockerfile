@@ -1,8 +1,8 @@
 FROM maven:3.6.1-jdk-8-alpine AS maven_build
 WORKDIR /app
-COPY ./pom.xml ./pom.xml
+COPY pom.xml ./pom.xml
 RUN mvn dependency:go-offline -B
-COPY ./src ./src
+COPY src ./src
 
 # TODO: jollof-* should be replaced with the proper prefix
 RUN mvn package && cp target/Demo-*.jar app.jar
