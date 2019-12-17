@@ -14,7 +14,7 @@ WORKDIR /app
 COPY --from=maven_build /app/app.jar ./app.jar
 
 # VOLUME /tmp  # optional
-EXPOSE 7001    # also optional
+#EXPOSE 7001    # also optional
 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
 
