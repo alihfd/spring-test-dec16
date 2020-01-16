@@ -35,7 +35,7 @@ public class PersistanceTest {
 
 	@Test
 	public void testFindById() {
-		User user1 = new User("Ali", "Hafid", "alihfd@gmail.com", "alihfd", "password1");
+		User user1 = new User("Ali", "H", "ali@gmail.com", "alihf", "password1");
 		em.persist(user1);
 		em.flush();
 		//Optional<User> found = userDao.findById(1);
@@ -50,7 +50,7 @@ public class PersistanceTest {
 	
 	@Test
 	public void testGetUserByUsernameAndPassword() {
-		User user2 = new User("Aylin", "Hafid", "aylinhfd@gmail.com", "aylinhfd", "password2");
+		User user2 = new User("blah", "H", "blahh@gmail.com", "blahh", "password2");
 		em.persist(user2);
 		em.flush();
 		
